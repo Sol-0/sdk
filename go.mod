@@ -1,4 +1,4 @@
-module github.com/networkservicemesh/sdk
+module github.com/Sol-0/sdk
 
 go 1.16
 

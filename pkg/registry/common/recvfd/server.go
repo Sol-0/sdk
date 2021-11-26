@@ -34,6 +34,7 @@ import (
 	"github.com/networkservicemesh/api/pkg/api/registry"
 
 	"github.com/networkservicemesh/sdk/pkg/registry/core/next"
+	"github.com/networkservicemesh/sdk/pkg/tools/log"
 )
 
 type recvfdNseServer struct {
@@ -100,7 +101,7 @@ func (r *recvfdNseServer) Unregister(ctx context.Context, endpoint *registry.Net
 	}
 
 	// Clean up the fileMap no matter what happens
-	defer r.closeFiles(endpoint)
+	defer r.closeFiles(endpoint, ctx)
 
 	// Get the grpcfd.FDRecver
 	recv, ok := grpcfd.FromContext(ctx)
@@ -212,7 +213,9 @@ func swapFileToInode(fileMap *perEndpointFileMap, endpoint *registry.NetworkServ
 	return nil
 }
 
-func (r *recvfdNseServer) closeFiles(endpoint *registry.NetworkServiceEndpoint) {
+func (r *recvfdNseServer) closeFiles(endpoint *registry.NetworkServiceEndpoint, ctx context.Context) {
+	log.FromContext(ctx).Info("Closing files")
+
 	defer r.fileMaps.Delete(endpoint.GetName())
 
 	fileMap, _ := r.fileMaps.LoadOrStore(endpoint.GetName(), &perEndpointFileMap{

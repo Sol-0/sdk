@@ -204,13 +204,13 @@ func (tree *IPPool) PullP2PAddrs(exclude ...*IPPool) (srcNet, dstNet *net.IPNet,
 		clone.excludePool(pool)
 	}
 
-	srcIP := clone.pull()
-	if srcIP == nil {
+	dstIP := clone.pull()
+	if dstIP == nil {
 		return nil, nil, errors.New("IPPool is empty")
 	}
 
-	dstIP := clone.pull()
-	if dstIP == nil {
+	srcIP := clone.pull()
+	if srcIP == nil {
 		return nil, nil, errors.New("IPPool is empty")
 	}
 
@@ -339,12 +339,12 @@ func (tree *IPPool) pull() *ipAddress {
 		return nil
 	}
 
-	ip := node.Value.end
-	if node.Value.end.Equal(node.Value.start) {
+	ip := node.Value.start
+	if node.Value.start.Equal(node.Value.end) {
 		tree.removeNode(node)
 		return ip
 	}
-	node.Value.end = node.Value.end.Prev()
+	node.Value.start = node.Value.start.Next()
 	return ip
 }
 

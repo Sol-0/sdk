@@ -339,12 +339,12 @@ func (tree *IPPool) pull() *ipAddress {
 		return nil
 	}
 
-	ip := node.Value.start
-	if node.Value.start.Equal(node.Value.end) {
+	ip := node.Value.end
+	if node.Value.end.Equal(node.Value.start) {
 		tree.removeNode(node)
 		return ip
 	}
-	node.Value.start = node.Value.start.Next()
+	node.Value.end = node.Value.end.Prev()
 	return ip
 }
 

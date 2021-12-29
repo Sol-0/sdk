@@ -103,10 +103,10 @@ func (epc *excludedPrefixesClient) Request(ctx context.Context, request *network
 		respIPContext.GetDstIpAddrs(), respIPContext.GetExcludedPrefixes())
 
 	<-epc.executor.AsyncExec(func() {
-		epc.excludedPrefixes = append(epc.excludedPrefixes, respIPContext.GetSrcIpAddrs()...)
+		//epc.excludedPrefixes = append(epc.excludedPrefixes, respIPContext.GetSrcIpAddrs()...)
 		epc.excludedPrefixes = append(epc.excludedPrefixes, respIPContext.GetDstIpAddrs()...)
-		epc.excludedPrefixes = append(epc.excludedPrefixes, getRoutePrefixes(respIPContext.GetSrcRoutes())...)
-		epc.excludedPrefixes = append(epc.excludedPrefixes, getRoutePrefixes(respIPContext.GetDstRoutes())...)
+		//epc.excludedPrefixes = append(epc.excludedPrefixes, getRoutePrefixes(respIPContext.GetSrcRoutes())...)
+		//epc.excludedPrefixes = append(epc.excludedPrefixes, getRoutePrefixes(respIPContext.GetDstRoutes())...)
 		epc.excludedPrefixes = append(epc.excludedPrefixes, respIPContext.GetExcludedPrefixes()...)
 		epc.excludedPrefixes = removeDuplicates(epc.excludedPrefixes)
 		logger.Debugf("Added excluded prefixes: %+v", epc.excludedPrefixes)
